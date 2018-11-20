@@ -1,5 +1,8 @@
 package logic.brick;
 
+import java.util.Observable;
+import observer.IObservable;
+
 /**
  * Interface that represents a brick object.
  * <p>
@@ -34,4 +37,6 @@ public interface Brick {
      * @return the remaining hits to destroy de brick
      */
     int remainingHits();
+
+
 }

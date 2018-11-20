@@ -7,8 +7,13 @@ package controller;
  */
 public class Game {
 
-    public Game(int balls) {
+    private int balls;
+    private int currentScore;
 
+
+    public Game(int balls) {
+        this.balls = balls;
+        this.currentScore = 0;
     }
 
     /**

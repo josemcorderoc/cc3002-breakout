@@ -1,9 +1,10 @@
 package logic.level;
 
 import logic.brick.Brick;
+import observer.IObservable;
+import observer.IObserver;
 
 import java.util.List;
-
 /**
  * Interface that represents the basics of a level to be played on.
  *
