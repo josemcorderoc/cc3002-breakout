@@ -24,7 +24,7 @@ public class Game implements Observer {
     public Game(int balls) {
         this.balls = balls;
         this.currentScore = 0;
-        this.currentLevel = new NullLevel();
+        this.currentLevel = new NullLevel(false);
     }
 
     /**
@@ -115,8 +115,9 @@ public class Game implements Observer {
         if (observable instanceof Level && o instanceof Integer) {
             currentScore += (Integer) o;
         }
+
         if (observable instanceof Level && o instanceof Boolean) {
-            goNextLevel();
+                goNextLevel();
         }
 
         if (observable instanceof Level && o instanceof String && ((String)o).equals("extraBall")) {
