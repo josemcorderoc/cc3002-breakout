@@ -1,16 +1,15 @@
 package logic.level;
 
 import logic.brick.Brick;
-import observer.IObservable;
-import observer.IObserver;
-
 import java.util.List;
+import java.util.Observer;
+
 /**
  * Interface that represents the basics of a level to be played on.
  *
  * @author Juan-Pablo Silva
  */
-public interface Level {
+public interface Level extends Observer {
     /**
      * Gets the level's name. Each level must have a name.
      *
@@ -73,4 +72,10 @@ public interface Level {
      * @param level the next level of a level object
      */
     void setNextLevel(Level level);
+
+    /**
+     * Gets whether the level is winned (max score is achieved) or not.
+     * @return True if level is winned, false if is not
+     */
+    boolean winned();
 }
