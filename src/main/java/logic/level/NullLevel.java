@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+/**
+ * NullLevel class, models a null level object according to Null Object Pattern.
+ * Field isEnd allows to use NullLevel in end or in beginning of level list
+ */
 public class NullLevel implements Level {
 
-    private Level nextLevel;
     private boolean isEnd;
 
     public NullLevel(boolean cond) {
-        nextLevel = null;
         isEnd = cond;
     }
 
@@ -47,7 +49,7 @@ public class NullLevel implements Level {
      */
     @Override
     public List<Brick> getBricks() {
-        return new ArrayList<Brick>();
+        return new ArrayList<>();
     }
 
     /**
@@ -67,10 +69,7 @@ public class NullLevel implements Level {
      */
     @Override
     public boolean equals(Object o) {
-        if (o instanceof NullLevel) {
-            return true;
-        }
-        return false;
+        return o instanceof NullLevel;
     }
 
     /**

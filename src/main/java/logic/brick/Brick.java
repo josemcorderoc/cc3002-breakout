@@ -10,7 +10,10 @@ import observer.IObservable;
  *
  * @author Juan-Pablo Silva
  */
-public interface Brick {
+public interface Brick
+
+
+{
     /**
      * Defines that a brick has been hit.
      * Implementations should consider the events that a hit to a brick can trigger.

@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 /**
  * Test the RealLevel class associated methods
  */
-public class RealLevelTest {
+public class RealLevelTest implements LevelTest {
 
     private RealLevel level1;
     private RealLevel level2;
@@ -26,11 +26,17 @@ public class RealLevelTest {
     private RealLevel level5;
 
     private RealLevel levelWithNext;
+    private RealLevel level1next;
+    private RealLevel level2next;
+    private RealLevel level3next;
+    private RealLevel level4next;
+    private RealLevel level5next;
 
-    @Before
+
     /**
      * Initialize real levels
      */
+    @Before
     public void setUp() {
         level1 = new RealLevel("Level 1", 2, 1, 0,100);
         level2 = new RealLevel("Level 2", 2, 1, 1,100);
@@ -38,8 +44,18 @@ public class RealLevelTest {
         level4 = new RealLevel("Level 4", 2, 0, 0,100);
         level5 = new RealLevel("Level 5", 2, 0.5, 0,100);
 
-        levelWithNext = new RealLevel("Level 1", 2, 1, 0,100);
-        levelWithNext.setNextLevel(level1);
+        level1next = new RealLevel("Level 1", 2, 1, 0,100);
+        level2next = new RealLevel("Level 2", 2, 1, 1,100);
+        level3next = new RealLevel("Level 3", 2, 0, 1,100);
+        level4next = new RealLevel("Level 4", 2, 0, 0,100);
+        level5next = new RealLevel("Level 5", 2, 0.5, 0,100);
+
+
+        levelWithNext = new RealLevel("Level With Next", 2, 1, 0,100);
+        levelWithNext.addPlayingLevel(level1next);
+        levelWithNext.addPlayingLevel(level2next);
+        levelWithNext.addPlayingLevel(level3next);
+        levelWithNext.addPlayingLevel(level4next);
     }
 
     /**
@@ -47,7 +63,11 @@ public class RealLevelTest {
      */
     @Test
     public void testEquals() {
-
+        assertEquals(level1, level1);
+        assertEquals(level1, new RealLevel("Level 1", 2, 1, 0,100));
+        assertNotEquals(level1, level2);
+        assertNotEquals(level1, levelWithNext);
+        assertNotEquals(level1, new NullLevel());
     }
 
     /**
@@ -101,6 +121,8 @@ public class RealLevelTest {
         assertEquals(level2bricks, level2.getBricks());
         assertEquals(level3bricks, level3.getBricks());
         assertEquals(level4bricks, level4.getBricks());
+        //assertEquals(level5bricks, level5.getBricks());
+        assertEquals(level1bricks, levelWithNext.getBricks());
     }
 
     /**
@@ -110,7 +132,10 @@ public class RealLevelTest {
     public void testGetNextLevel() {
         assertEquals(new NullLevel(), level1.getNextLevel());
         assertEquals(new NullLevel(), level2.getNextLevel());
-        //assertEquals();
+        assertEquals(new NullLevel(), level3.getNextLevel());
+        assertEquals(new NullLevel(), level4.getNextLevel());
+        assertEquals(new NullLevel(), level5.getNextLevel());
+        assertNotEquals(level1, levelWithNext.getNextLevel());
 
     }
 
@@ -124,6 +149,7 @@ public class RealLevelTest {
         assertTrue(level3.isPlayableLevel());
         assertTrue(level4.isPlayableLevel());
         assertTrue(level5.isPlayableLevel());
+        assertTrue(levelWithNext.isPlayableLevel());
     }
 
     /**
@@ -131,7 +157,12 @@ public class RealLevelTest {
      */
     @Test
     public void testHasNextLevel() {
-
+        assertFalse(level1.hasNextLevel());
+        assertFalse(level2.hasNextLevel());
+        assertFalse(level3.hasNextLevel());
+        assertFalse(level4.hasNextLevel());
+        assertFalse(level5.hasNextLevel());
+        assertTrue(levelWithNext.hasNextLevel());
     }
 
     /**
@@ -143,7 +174,7 @@ public class RealLevelTest {
         assertEquals(100, level2.getPoints());
         assertEquals(400, level3.getPoints());
         assertEquals(400, level4.getPoints());
-
+        assertEquals(100, levelWithNext.getPoints());
     }
 
     /**
@@ -164,6 +195,9 @@ public class RealLevelTest {
      */
     @Test
     public void testSetNextLevel() {
-
+        level1.setNextLevel(level3);
+        levelWithNext.setNextLevel(level4);
+        assertEquals(level3,level1.getNextLevel());
+        assertEquals(level4,levelWithNext.getNextLevel());
     }
 }

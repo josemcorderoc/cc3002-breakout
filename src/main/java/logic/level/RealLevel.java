@@ -14,15 +14,21 @@ public class RealLevel extends Observable implements Level  {
     private Level nextLevel;
     private int points;
     private int currentPoints;
-    private int extraBalls;
+
+    /**
+     * Default no-parameters RealLevel constructor
+     */
+    public RealLevel() {
+        this("auto level", 10, 1, 0, 100);
+    }
 
     /**
      * RealLevel constructor
-     * @param name
-     * @param numberOfBricks
-     * @param probOfGlass
-     * @param probOfMetal
-     * @param seed
+     * @param name           the name of the level
+     * @param numberOfBricks the number of bricks in the level
+     * @param probOfGlass    the probability of a {@link logic.brick.GlassBrick}
+     * @param probOfMetal    the probability of a {@link logic.brick.MetalBrick}
+     * @param seed           the seed for the random number generator
      */
     public RealLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, int seed) {
         this.name = name;
@@ -30,7 +36,6 @@ public class RealLevel extends Observable implements Level  {
         this.nextLevel = new NullLevel();
         this.points = 0;
         this.currentPoints = 0;
-        this.extraBalls = 0;
 
         // creation of brick list
         Random random = new Random(seed);

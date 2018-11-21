@@ -10,10 +10,12 @@ public abstract class AbstractBrick extends Observable implements Brick {
     private int i,j;
 
 
-    public AbstractBrick(int hitPoints, int score, int i, int j) {
+    AbstractBrick(int hitPoints, int score, int i, int j) {
         this.totalHP = hitPoints;
         this.currentHP = hitPoints;
         this.score = score;
+        this.i = i;
+        this.j = j;
     }
 
     /**
@@ -34,8 +36,8 @@ public abstract class AbstractBrick extends Observable implements Brick {
 
     /**
      * Position (i,j) setter
-     * @param i
-     * @param j
+     * @param i row
+     * @param j column
      */
     public void setPosition(int i, int j) {
         this.i = i;
@@ -52,7 +54,7 @@ public abstract class AbstractBrick extends Observable implements Brick {
 
     /**
      * totalHP setter
-     * @param newTotalHP
+     * @param newTotalHP totalHP to set
      */
     public void setTotalHP(int newTotalHP) {
         totalHP = newTotalHP;
@@ -68,7 +70,7 @@ public abstract class AbstractBrick extends Observable implements Brick {
 
     /**
      * currentHP setter
-     * @param newCurrentHP
+     * @param newCurrentHP currentHP to set
      */
     public void setCurrentHP(int newCurrentHP) {
         currentHP = newCurrentHP;
@@ -85,7 +87,7 @@ public abstract class AbstractBrick extends Observable implements Brick {
 
     /**
      * score setter
-     * @param newScore
+     * @param newScore score to set
      */
     public void setScore(int newScore) {
         score = newScore;
