@@ -6,6 +6,7 @@ import logic.brick.GlassBrick;
 import logic.brick.MetalBrick;
 import logic.brick.WoodenBrick;
 import logic.level.Level;
+import logic.level.RealLevel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -513,6 +514,7 @@ public class BigTestT2 {
         expectedScore += glassScore * 9 + woodenScore * 11;
 
         assertFalse(hw2.winner());
+
         assertNotEquals(level1, hw2.getCurrentLevel());
         assertEquals(level2, hw2.getCurrentLevel());
         assertEquals(expectedScore, hw2.getCurrentPoints());

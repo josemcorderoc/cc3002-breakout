@@ -1,19 +1,26 @@
 package logic.level;
 
 import logic.brick.*;
+import observer.Observer;
+import observer.Subject;
+import visitor.NotifyVisitor;
+import visitor.Visitable;
+import visitor.Visitor;
+
 import java.util.*;
 
 /**
  * Real level class: models a playable level
+ *
+ * @author Jose Miguel Cordero
  */
-public class RealLevel extends Observable implements Level  {
+public class RealLevel extends AbstractLevel implements Visitable {
 
-    private List<Brick> bricks;
-    private int numberOfBricks;
-    private String name;
     private Level nextLevel;
-    private int points;
     private int currentPoints;
+    private List<Observer> observers;
+    private boolean stateChange;
+
 
     /**
      * Default no-parameters RealLevel constructor
@@ -31,58 +38,10 @@ public class RealLevel extends Observable implements Level  {
      * @param seed           the seed for the random number generator
      */
     public RealLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, int seed) {
-        this.name = name;
-        this.bricks = new ArrayList<>();
+        super(name, numberOfBricks, probOfGlass, probOfMetal, seed);
+
         this.nextLevel = new NullLevel();
-        this.points = 0;
         this.currentPoints = 0;
-
-        // creation of brick list
-        Random random = new Random(seed);
-        for(int i = 0; i < numberOfBricks; i++) {
-            Brick newBrick = (random.nextDouble() < probOfGlass) ? new GlassBrick() : new WoodenBrick();
-            bricks.add(newBrick);
-            points += newBrick.getScore();
-        }
-
-        // HAY QUE VER SI CREAR OTRO ARRAYLIST PARA LOS METALBRICKS
-        for(int i = 0; i < numberOfBricks; i++) {
-            if (random.nextDouble() < probOfMetal) {
-                bricks.add(new MetalBrick());
-            }
-        }
-
-        this.numberOfBricks = bricks.size();
-    }
-
-    /**
-     * Gets the level's name. Each level must have a name.
-     *
-     * @return the table's name
-     */
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Gets the number of {@link Brick} in the level.
-     *
-     * @return the number of Bricks in the level
-     */
-    @Override
-    public int getNumberOfBricks() {
-        return numberOfBricks;
-    }
-
-    /**
-     * Gets the {@link List} of {@link Brick}s in the level.
-     *
-     * @return the bricks in the level
-     */
-    @Override
-    public List<Brick> getBricks() {
-        return bricks;
     }
 
     /**
@@ -93,23 +52,6 @@ public class RealLevel extends Observable implements Level  {
     @Override
     public Level getNextLevel() {
         return nextLevel;
-    }
-
-    /**
-     * Check if 2 null levels are the same
-     * @param o level to compare
-     * @return true if equals, false else
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof RealLevel) {
-            return this.bricks.equals(((RealLevel)o).bricks) &&
-                this.name.equals(((RealLevel)o).name) &&
-                this.nextLevel.equals(((RealLevel)o).nextLevel) &&
-                this.points == ((RealLevel)o).points &&
-                this.currentPoints == ((RealLevel)o).currentPoints;
-        }
-        return false;
     }
 
     /**
@@ -133,26 +75,17 @@ public class RealLevel extends Observable implements Level  {
     }
 
     /**
-     * Gets the total number of points obtainable in level.
-     *
-     * @return the number of points in the current level
+     * currentPoints getter
+     * @return currentPoints
      */
-    @Override
-    public int getPoints() {
-        return points;
-    }
-
-    /**
-     * points setter
-     */
-    public void setPoints(int newPoints) {
-        points = newPoints;
-    }
-
     public int getCurrentPoints() {
         return currentPoints;
     }
 
+    /**
+     * currentPoints setter
+     * @param newCurrentPoints new current points set
+     */
     public void setCurrentPoints(int newCurrentPoints) {
         currentPoints = newCurrentPoints;
     }
@@ -184,38 +117,35 @@ public class RealLevel extends Observable implements Level  {
      */
     @Override
     public boolean winned() {
-        return currentPoints >= points;
+        return currentPoints >= getPoints();
     }
 
     /**
      * Subscribes the bricks (observable) to the level (observer)
      */
     public void setObservableBricks() {
-        for (Brick brick : bricks) {
+        for (Brick brick : getBricks()) {
             ((AbstractBrick) brick).addObserver(this);
         }
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        if (observable instanceof Brick) {
-            Brick brick = (Brick) observable;
-            currentPoints += brick.getScore();
-            setChanged();
-            notifyObservers(brick.getScore());
 
-            if (brick instanceof MetalBrick) {
-                setChanged();
-                notifyObservers("extraBall");
-            }
+        NotifyVisitor visitor = (NotifyVisitor) o;
+        currentPoints += visitor.getScore();
+        setNumberOfBricks(getNumberOfBricks()-1);
+        setChanged();
+        accept(visitor);
+    }
 
-            numberOfBricks--;
-            //bricks.remove(brick);
-
-            if (winned()) {
-                setChanged();
-                notifyObservers(true);
-            }
-        }
+    /**
+     * Performs the operation defined by the visitor
+     *
+     * @param visitor operation
+     */
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitRealLevel(this);
     }
 }

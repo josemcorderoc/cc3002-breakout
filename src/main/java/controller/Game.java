@@ -4,6 +4,8 @@ import logic.brick.MetalBrick;
 import logic.level.Level;
 import logic.level.NullLevel;
 import logic.level.RealLevel;
+import visitor.NotifyVisitor;
+import visitor.Visitor;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -37,7 +39,7 @@ public class Game implements Observer {
 
     /**
      * balls setter
-     * @param newBalls
+     * @param newBalls new balls set
      */
     public void setBalls(int newBalls) {
         balls = newBalls;
@@ -69,7 +71,7 @@ public class Game implements Observer {
 
     /**
      * currentLevel setter
-     * @param newLevel
+     * @param newLevel new level set
      */
     public void setCurrentLevel(Level newLevel) {
         currentLevel = newLevel;
@@ -112,16 +114,13 @@ public class Game implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if (observable instanceof Level && o instanceof Integer) {
-            currentScore += (Integer) o;
-        }
+        NotifyVisitor visitor = (NotifyVisitor) o;
 
-        if (observable instanceof Level && o instanceof Boolean) {
-                goNextLevel();
-        }
+        currentScore += visitor.getScore();
+        balls += visitor.getExtraBalls();
 
-        if (observable instanceof Level && o instanceof String && ((String)o).equals("extraBall")) {
-            balls++;
+        if (currentLevel.winned()) {
+            goNextLevel();
         }
     }
 

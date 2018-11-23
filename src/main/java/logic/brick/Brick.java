@@ -1,8 +1,5 @@
 package logic.brick;
 
-import java.util.Observable;
-import observer.IObservable;
-
 /**
  * Interface that represents a brick object.
  * <p>

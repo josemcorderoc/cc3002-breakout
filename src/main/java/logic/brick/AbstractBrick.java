@@ -1,8 +1,16 @@
 package logic.brick;
 
+import visitor.NotifyVisitor;
+import visitor.Visitable;
+
 import java.util.Observable;
 
-public abstract class AbstractBrick extends Observable implements Brick {
+/**
+ * Models behavior and properties of {@link Brick}s
+ *
+ * @author Jose Miguel Cordero
+ */
+public abstract class AbstractBrick extends Observable implements Brick, Visitable {
 
     private int totalHP;
     private int currentHP;
@@ -119,7 +127,7 @@ public abstract class AbstractBrick extends Observable implements Brick {
             setCurrentHP(getCurrentHP()-1);
             if (isDestroyed()) {
                 setChanged();
-                notifyObservers();
+                accept(new NotifyVisitor());
             }
         }
     }

@@ -1,6 +1,8 @@
 package logic.level;
 
 import logic.brick.Brick;
+import visitor.Visitable;
+
 import java.util.List;
 import java.util.Observer;
 
