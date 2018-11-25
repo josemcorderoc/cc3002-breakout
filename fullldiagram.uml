@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="194.42261904761904" y="0.0">java.util.Observer</node>
+    <node x="248.0" y="103.0">controller.Game</node>
+    <node x="1383.047619047619" y="1266.5">logic.brick.MetalBrick</node>
+    <node x="298.1577380952381" y="1174.0">logic.level.NullLevel</node>
+    <node x="1188.047619047619" y="1266.5">logic.brick.GlassBrick</node>
+    <node x="0.0" y="1573.0">visitor.Visitor</node>
+    <node x="666.047619047619" y="1105.0">logic.level.RealLevel</node>
+    <node x="1185.6666666666667" y="586.0">logic.brick.AbstractBrick</node>
+    <node x="342.9077380952381" y="655.0">logic.level.AbstractLevel</node>
+    <node x="1329.4464285714284" y="253.5">logic.brick.Brick</node>
+    <node x="1603.047619047619" y="0.0">facade.HomeworkTwoFacade</node>
+    <node x="668.0" y="160.5">java.util.Observable</node>
+    <node x="0.0" y="1745.0">visitor.NotifyVisitor</node>
+    <node x="1077.735119047619" y="288.0">visitor.Visitable</node>
+    <node x="0.0" y="184.5">logic.level.Level</node>
+    <node x="980.047619047619" y="1266.5">logic.brick.WoodenBrick</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="logic.level.AbstractLevel" target="logic.level.Level">
+      <point x="-79.25" y="-165.5" />
+      <point x="422.1577380952381" y="566.0" />
+      <point x="114.0" y="566.0" />
+      <point x="0.0" y="130.0" />
+    </edge>
+    <edge source="logic.brick.WoodenBrick" target="logic.brick.AbstractBrick">
+      <point x="0.0" y="-50.0" />
+      <point x="1074.047619047619" y="1080.0" />
+      <point x="1223.8333333333335" y="1080.0" />
+      <point x="-76.33333333333326" y="234.5" />
+    </edge>
+    <edge source="logic.brick.AbstractBrick" target="logic.brick.Brick">
+      <point x="76.33333333333326" y="-234.5" />
+      <point x="1376.5" y="566.0" />
+      <point x="1425.4464285714284" y="566.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="logic.brick.MetalBrick" target="logic.brick.AbstractBrick">
+      <point x="0.0" y="-50.0" />
+      <point x="1470.547619047619" y="1080.0" />
+      <point x="1376.5" y="1080.0" />
+      <point x="76.33333333333326" y="234.5" />
+    </edge>
+    <edge source="controller.Game" target="java.util.Observer">
+      <point x="0.0" y="-211.5" />
+      <point x="448.0" y="78.0" />
+      <point x="380.42261904761904" y="78.0" />
+      <point x="62.0" y="26.5" />
+    </edge>
+    <edge source="logic.brick.AbstractBrick" target="visitor.Visitable">
+      <point x="0.0" y="-234.5" />
+      <point x="1300.1666666666667" y="546.0" />
+      <point x="1208.985119047619" y="546.0" />
+      <point x="43.75" y="26.5" />
+    </edge>
+    <edge source="logic.level.Level" target="java.util.Observer">
+      <point x="0.0" y="-130.0" />
+      <point x="114.0" y="78.0" />
+      <point x="256.42261904761904" y="78.0" />
+      <point x="-62.0" y="26.5" />
+    </edge>
+    <edge source="logic.level.AbstractLevel" target="java.util.Observable">
+      <point x="79.25" y="-165.5" />
+      <point x="580.6577380952381" y="566.0" />
+      <point x="728.5" y="566.0" />
+      <point x="-60.5" y="154.0" />
+    </edge>
+    <edge source="logic.level.NullLevel" target="logic.level.AbstractLevel">
+      <point x="0.0" y="-142.5" />
+      <point x="-79.25" y="165.5" />
+    </edge>
+    <edge source="logic.level.RealLevel" target="visitor.Visitable">
+      <point x="73.5" y="-211.5" />
+      <point x="886.547619047619" y="566.0" />
+      <point x="1121.485119047619" y="566.0" />
+      <point x="-43.75" y="26.5" />
+    </edge>
+    <edge source="logic.brick.AbstractBrick" target="java.util.Observable">
+      <point x="-76.33333333333326" y="-234.5" />
+      <point x="1223.8333333333335" y="556.0" />
+      <point x="849.5" y="556.0" />
+      <point x="60.5" y="154.0" />
+    </edge>
+    <edge source="visitor.NotifyVisitor" target="visitor.Visitor">
+      <point x="0.0" y="-107.5" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="logic.brick.GlassBrick" target="logic.brick.AbstractBrick">
+      <point x="0.0" y="-50.0" />
+      <point x="1275.547619047619" y="1080.0" />
+      <point x="1300.1666666666667" y="1080.0" />
+      <point x="0.0" y="234.5" />
+    </edge>
+    <edge source="logic.level.RealLevel" target="logic.level.AbstractLevel">
+      <point x="-73.5" y="-211.5" />
+      <point x="739.547619047619" y="1080.0" />
+      <point x="580.6577380952381" y="1080.0" />
+      <point x="79.25" y="165.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.3800000000000001" x="1490.0718900478414" y="976.7477025898074" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
