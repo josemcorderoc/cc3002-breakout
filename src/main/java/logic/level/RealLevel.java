@@ -1,8 +1,6 @@
 package logic.level;
 
 import logic.brick.*;
-import observer.Observer;
-import observer.Subject;
 import visitor.NotifyVisitor;
 import visitor.Visitable;
 import visitor.Visitor;
@@ -148,4 +146,5 @@ public class RealLevel extends AbstractLevel implements Visitable {
     public void accept(Visitor visitor) {
         visitor.visitRealLevel(this);
     }
+
 }

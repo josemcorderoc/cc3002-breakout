@@ -101,6 +101,5 @@ public class NullLevel extends AbstractLevel {
 
     @Override
     public void update(Observable observable, Object o) {
-
     }
 }

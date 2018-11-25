@@ -18,6 +18,11 @@ public interface LevelTest {
     void testGetNumberOfBricks();
 
     /**
+     * Test setNumberOfBricks method
+     */
+    void testSetNumberOfBricks();
+
+    /**
      * Test getBricks method
      */
     void testGetBricks();
@@ -38,17 +43,27 @@ public interface LevelTest {
     void testHasNextLevel();
 
     /**
-     * test getPoints method
+     * Test getPoints method
      */
     void testGetPoints();
 
     /**
-     * test addPlayingLevel method
+     * Test addPlayingLevel method
      */
     void testAddPlayingLevel();
 
     /**
-     * test setNextLevel method
+     * Test setNextLevel method
      */
     void testSetNextLevel();
+
+    /**
+     * Test setPoints method
+     */
+    void testSetPoints();
+
+    /**
+     * Test update method
+     */
+    void testUpdate();
 }

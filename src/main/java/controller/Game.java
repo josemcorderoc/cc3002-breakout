@@ -1,11 +1,9 @@
 package controller;
 
-import logic.brick.MetalBrick;
 import logic.level.Level;
 import logic.level.NullLevel;
 import logic.level.RealLevel;
 import visitor.NotifyVisitor;
-import visitor.Visitor;
 
 import java.util.Observable;
 import java.util.Observer;

@@ -68,6 +68,7 @@ public class RealLevelTest implements LevelTest {
         assertNotEquals(level1, level2);
         assertNotEquals(level1, levelWithNext);
         assertNotEquals(level1, new NullLevel());
+        assertNotEquals(level1, new GlassBrick());
     }
 
     /**
@@ -92,6 +93,21 @@ public class RealLevelTest implements LevelTest {
         assertEquals(4, level3.getNumberOfBricks());
         assertEquals(2, level4.getNumberOfBricks());
         //assertEquals(15, level5.getNumberOfBricks());
+    }
+
+    /**
+     * Test setNumberOfBricks method
+     */
+    @Test
+    public void testSetNumberOfBricks() {
+        level1.setNumberOfBricks(43);
+        level2.setNumberOfBricks(23);
+        level3.setNumberOfBricks(94);
+        level4.setNumberOfBricks(77);
+        assertEquals(43, level1.getNumberOfBricks());
+        assertEquals(23, level2.getNumberOfBricks());
+        assertEquals(94, level3.getNumberOfBricks());
+        assertEquals(77, level4.getNumberOfBricks());
     }
 
     /**
@@ -199,5 +215,54 @@ public class RealLevelTest implements LevelTest {
         levelWithNext.setNextLevel(level4);
         assertEquals(level3,level1.getNextLevel());
         assertEquals(level4,levelWithNext.getNextLevel());
+    }
+
+    /**
+     * test setPoints method
+     */
+    @Test
+    public void testSetPoints() {
+        level1.setPoints(767);
+        level2.setPoints(123);
+        level3.setPoints(456);
+        level4.setPoints(789);
+        assertEquals(767, level1.getPoints());
+        assertEquals(123, level2.getPoints());
+        assertEquals(456, level3.getPoints());
+        assertEquals(789, level4.getPoints());
+    }
+
+    /**
+     * Test update method
+     */
+    @Override
+    public void testUpdate() {
+
+    }
+
+    /**
+     * test getCurrentPoints method
+     */
+    @Test
+    public void testGetCurrentPoints() {
+        assertEquals(0, level1.getCurrentPoints());
+        assertEquals(0, level2.getCurrentPoints());
+        assertEquals(0, level3.getCurrentPoints());
+        assertEquals(0, level4.getCurrentPoints());
+        assertEquals(0, level5.getCurrentPoints());
+        assertEquals(0, levelWithNext.getCurrentPoints());
+    }
+
+    /**
+     * test setCurrentPoints method
+     */
+    @Test
+    public void testSetCurrentPoints() {
+        level1.setCurrentPoints(123);
+        level2.setCurrentPoints(456);
+        levelWithNext.setCurrentPoints(789);
+        assertEquals(123,level1.getCurrentPoints());
+        assertEquals(456,level2.getCurrentPoints());
+        assertEquals(789,levelWithNext.getCurrentPoints());
     }
 }

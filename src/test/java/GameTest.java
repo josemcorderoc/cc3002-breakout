@@ -1,7 +1,13 @@
 package test.java;
 
 import controller.Game;
+import logic.brick.Brick;
+import logic.brick.GlassBrick;
+import logic.brick.MetalBrick;
+import logic.brick.WoodenBrick;
+import logic.level.Level;
 import logic.level.NullLevel;
+import logic.level.RealLevel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -84,10 +90,19 @@ public class GameTest {
      */
     @Test
     public void testSetCurrentLevel() {
+        RealLevel level1 = new RealLevel("level 1", 1, 1, 0, 100);
+        RealLevel level2 = new RealLevel("level 2", 1, 1, 0, 100);
+        RealLevel level3 = new RealLevel("level 3", 1, 1, 0, 100);
+        game1.setCurrentLevel(level1);
+        game2.setCurrentLevel(level2);
+        game3.setCurrentLevel(level3);
 
-        assertEquals(game1.getCurrentLevel(), new NullLevel(false));
-        assertEquals(game2.getCurrentLevel(),new NullLevel(false));
-        assertEquals(game3.getCurrentLevel(),new NullLevel(false));
+        assertEquals(new RealLevel("level 1", 1, 1, 0, 100),
+                game1.getCurrentLevel());
+        assertEquals(new RealLevel("level 2", 1, 1, 0, 100),
+                game2.getCurrentLevel());
+        assertEquals(new RealLevel("level 3", 1, 1, 0, 100),
+                game3.getCurrentLevel());
     }
 
     /**
@@ -95,6 +110,18 @@ public class GameTest {
      */
     @Test
     public void testGoNextLevel() {
+        RealLevel level1 = new RealLevel("level 1", 1, 1, 0, 100);
+        RealLevel level2 = new RealLevel("level 2", 1, 1, 0, 100);
+        RealLevel level3 = new RealLevel("level 3", 1, 1, 0, 100);
+        level2.setNextLevel(level3);
+        level1.setNextLevel(level2);
+        game1.setCurrentLevel(level1);
+
+        assertEquals(level1, game1.getCurrentLevel());
+        game1.goNextLevel();
+        assertEquals(level2, game1.getCurrentLevel());
+        game1.goNextLevel();
+        assertEquals(level3, game1.getCurrentLevel());
     }
 
     /**
@@ -136,6 +163,31 @@ public class GameTest {
      */
     @Test
     public void testUpdate() {
+        Level level1 = game1.newLevelWithBricksFull("level 1", 4, 1, 0, 100);
+        Level level2 = game2.newLevelWithBricksFull("level 2", 2, 1, 0, 100);
+        Level level3 = game3.newLevelWithBricksFull("level 3", 2, 1, 1, 100);
+        game1.setCurrentLevel(level1);
+        game2.setCurrentLevel(level2);
+        game3.setCurrentLevel(level3);
+
+        for (Brick brick : level1.getBricks()) {
+            brick.hit();
+        }
+        for (Brick brick : level2.getBricks()) {
+            brick.hit();
+        }
+        for (Brick brick : level3.getBricks()) {
+            for(int i = 0; i < 10; i++) {
+                brick.hit();
+            }
+        }
+        assertEquals(200, game1.getCurrentScore());
+        assertEquals(100, game2.getCurrentScore());
+        assertEquals(100, game3.getCurrentScore());
+
+        assertEquals(0, game1.getBalls());
+        assertEquals(1, game2.getBalls());
+        assertEquals(9, game3.getBalls());
     }
 
     /**
@@ -143,6 +195,13 @@ public class GameTest {
      */
     @Test
     public void testNewLevelWithBricksFull() {
+        Level level1 = game1.newLevelWithBricksFull("level 1", 1, 1, 0.5, 100);
+        Level level2 = game2.newLevelWithBricksFull("level 2", 1, 1, 0.6, 100);
+        Level level3 = game3.newLevelWithBricksFull("level 3", 1, 1, 0.7, 100);
+        assertEquals(new RealLevel("level 1", 1, 1, 0.5, 100), level1);
+        assertEquals(new RealLevel("level 2", 1, 1, 0.6, 100), level2);
+        assertEquals(new RealLevel("level 3", 1, 1, 0.7, 100), level3);
+
     }
 
     /**
@@ -150,5 +209,11 @@ public class GameTest {
      */
     @Test
     public void testNewLevelWithBricksNoMetal() {
+        Level level1 = game1.newLevelWithBricksNoMetal("level 1", 1, 1, 100);
+        Level level2 = game2.newLevelWithBricksNoMetal("level 2", 1, 1, 100);
+        Level level3 = game3.newLevelWithBricksNoMetal("level 3", 1, 1, 100);
+        assertEquals(new RealLevel("level 1", 1, 1, 0, 100), level1);
+        assertEquals(new RealLevel("level 2", 1, 1, 0, 100), level2);
+        assertEquals(new RealLevel("level 3", 1, 1, 0, 100), level3);
     }
 }

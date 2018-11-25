@@ -19,7 +19,7 @@ public abstract class AbstractLevel extends Observable implements Level {
     /**
      * Default non-parameters AbstractLevel constructor
      */
-    protected AbstractLevel() {
+    AbstractLevel() {
         this.bricks = new ArrayList<>();
         this.numberOfBricks = 0;
         this.name = "";
@@ -34,7 +34,7 @@ public abstract class AbstractLevel extends Observable implements Level {
      * @param probOfMetal    the probability of a {@link logic.brick.MetalBrick}
      * @param seed           the seed for the random number generator
      */
-    protected AbstractLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, int seed) {
+    AbstractLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, int seed) {
         this.name = name;
         this.bricks = new ArrayList<>();
         this.points = 0;
@@ -109,15 +109,6 @@ public abstract class AbstractLevel extends Observable implements Level {
     @Override
     public int getPoints() {
         return points;
-    }
-
-    /**
-     * Subscribes the bricks (observable) to the level (observer)
-     */
-    public void setObservableBricks() {
-        for (Brick brick : bricks) {
-            ((AbstractBrick) brick).addObserver(this);
-        }
     }
 
     /**
