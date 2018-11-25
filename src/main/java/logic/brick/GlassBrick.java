@@ -2,6 +2,11 @@ package logic.brick;
 
 import visitor.Visitor;
 
+/**
+ * A glass brick model
+ *
+ * @author Jose Migue Cordero
+ */
 public class GlassBrick extends AbstractBrick {
 
     public GlassBrick(int i, int j) {

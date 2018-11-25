@@ -20,7 +20,10 @@ public class Game implements Observer {
     private int currentScore;
     private Level currentLevel;
 
-
+    /**
+     * Game constructor
+     * @param balls
+     */
     public Game(int balls) {
         this.balls = balls;
         this.currentScore = 0;

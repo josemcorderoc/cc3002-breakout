@@ -2,6 +2,11 @@ package logic.brick;
 
 import visitor.Visitor;
 
+/**
+ * A wooden brick model
+ *
+ * @author Jose Migue Cordero
+ */
 public class WoodenBrick extends AbstractBrick {
 
     public WoodenBrick(int i, int j) {

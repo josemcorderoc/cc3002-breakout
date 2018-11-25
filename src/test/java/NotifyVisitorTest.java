@@ -63,37 +63,4 @@ public class NotifyVisitorTest {
         assertEquals(0, visitor2.getExtraBalls());
         assertEquals(0, visitor3.getExtraBalls());
     }
-
-    /**
-     * test visitRealLevel method
-     */
-    @Test
-    public void testVisitRealLevel() {
-
-    }
-
-    /**
-     * test visitMetalBrick method
-     */
-    @Test
-    public void testVisitMetalBrick() {
-
-    }
-
-    /**
-     * test visitGlassBrick method
-     */
-    @Test
-    public void testVisitGlassBrick() {
-
-    }
-
-    /**
-     * test visitWoodenBrick method
-     */
-    @Test
-    public void testVisitWoodenBrick() {
-
-    }
-
 }

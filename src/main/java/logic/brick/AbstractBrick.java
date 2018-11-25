@@ -17,7 +17,6 @@ public abstract class AbstractBrick extends Observable implements Brick, Visitab
     private int score;
     private int i,j;
 
-
     AbstractBrick(int hitPoints, int score, int i, int j) {
         this.totalHP = hitPoints;
         this.currentHP = hitPoints;

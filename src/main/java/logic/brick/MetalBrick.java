@@ -2,6 +2,11 @@ package logic.brick;
 
 import visitor.Visitor;
 
+/**
+ * A metal brick model
+ *
+ * @author Jose Migue Cordero
+ */
 public class MetalBrick extends AbstractBrick {
 
     public MetalBrick(int i, int j) {
