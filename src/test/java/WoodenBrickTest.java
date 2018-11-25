@@ -1,16 +1,10 @@
 package test.java;
 
-import logic.brick.AbstractBrick;
-import logic.brick.GlassBrick;
-import logic.brick.MetalBrick;
 import logic.brick.WoodenBrick;
-import logic.level.AbstractLevel;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test the WoodenBrick class associated methods

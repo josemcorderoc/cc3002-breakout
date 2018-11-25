@@ -22,7 +22,7 @@ public class Game implements Observer {
 
     /**
      * Game constructor
-     * @param balls
+     * @param balls balls
      */
     public Game(int balls) {
         this.balls = balls;
