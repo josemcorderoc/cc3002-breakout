@@ -1,55 +1,31 @@
 package logic.level;
 
-import logic.brick.Brick;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 
 /**
  * NullLevel class, models a null level object according to Null Object Pattern.
  * Field isEnd allows to use NullLevel in end or in beginning of level list
+ *
+ * @author Jose Miguel Cordero
  */
-public class NullLevel implements Level {
+public class NullLevel extends AbstractLevel {
 
     private boolean isEnd;
 
+    /**
+     * NullLevel constructor
+     * @param cond is end level or not
+     */
     public NullLevel(boolean cond) {
+        super();
         isEnd = cond;
     }
 
+    /**
+     * Default non-parameters NullLevel constructor
+     */
     public NullLevel() {
         this(true);
-    }
-
-    /**
-     * Gets the level's name. Each level must have a name.
-     *
-     * @return the table's name
-     */
-    @Override
-    public String getName() {
-        return "";
-    }
-
-    /**
-     * Gets the number of {@link Brick} in the level.
-     *
-     * @return the number of Bricks in the level
-     */
-    @Override
-    public int getNumberOfBricks() {
-        return 0;
-    }
-
-    /**
-     * Gets the {@link List} of {@link Brick}s in the level.
-     *
-     * @return the bricks in the level
-     */
-    @Override
-    public List<Brick> getBricks() {
-        return new ArrayList<>();
     }
 
     /**
@@ -63,7 +39,7 @@ public class NullLevel implements Level {
     }
 
     /**
-     * Check if 2 null levels are the same
+     * Check if 2 null levels are the same (2 instances of NullLevel are always equals)
      * @param o level to compare
      * @return true if equals, false else
      */
@@ -92,15 +68,6 @@ public class NullLevel implements Level {
         return false;
     }
 
-    /**
-     * Gets the total number of points obtainable in level.
-     *
-     * @return the number of points in the current level
-     */
-    @Override
-    public int getPoints() {
-        return 0;
-    }
 
     /**
      * Adds a level to the list of levels. This adds the level in the last position of the list.
@@ -118,7 +85,9 @@ public class NullLevel implements Level {
      * @param level the next level of a level object
      */
     @Override
-    public void setNextLevel(Level level) {}
+    public void setNextLevel(Level level) {
+
+    }
 
     /**
      * Gets whether the level is winned (max score is achieved) or not.
@@ -132,6 +101,5 @@ public class NullLevel implements Level {
 
     @Override
     public void update(Observable observable, Object o) {
-
     }
 }

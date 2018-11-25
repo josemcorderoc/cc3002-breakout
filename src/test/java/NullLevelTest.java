@@ -1,12 +1,14 @@
 package test.java;
 
 import logic.brick.Brick;
+import logic.brick.GlassBrick;
 import logic.level.NullLevel;
 import logic.level.RealLevel;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 import static org.junit.Assert.*;
 
@@ -35,6 +37,7 @@ public class NullLevelTest implements LevelTest {
         assertEquals(nulllevel1,nulllevel2);
         assertEquals(nulllevel1,nulllevel3);
         assertNotEquals(nulllevel1, new RealLevel());
+        assertNotEquals(nulllevel1, new GlassBrick());
     }
 
     /**
@@ -55,6 +58,14 @@ public class NullLevelTest implements LevelTest {
         assertEquals(0, nulllevel1.getNumberOfBricks());
         assertEquals(0, nulllevel2.getNumberOfBricks());
         assertEquals(0, nulllevel3.getNumberOfBricks());
+    }
+
+    /**
+     * Test setNumberOfBricks method
+     */
+    @Override
+    public void testSetNumberOfBricks() {
+
     }
 
     /**
@@ -127,5 +138,31 @@ public class NullLevelTest implements LevelTest {
         RealLevel level = new RealLevel();
         nulllevel1.setNextLevel(level);
         assertEquals(new NullLevel(), nulllevel1);
+    }
+
+    /**
+     * test setPoints method
+     */
+    @Test
+    public void testSetPoints() {
+        nulllevel1.setPoints(767);
+        nulllevel2.setPoints(123);
+        nulllevel3.setPoints(456);
+        assertEquals(767, nulllevel1.getPoints());
+        assertEquals(123, nulllevel2.getPoints());
+        assertEquals(456, nulllevel3.getPoints());
+    }
+
+    /**
+     * Test update method
+     */
+    @Test
+    public void testUpdate() {
+        nulllevel1.update(new Observable(), "notify1");
+        nulllevel2.update(new Observable(), "notify2");
+        nulllevel3.update(new Observable(), "notify3");
+        assertEquals(new NullLevel(),nulllevel1);
+        assertEquals(new NullLevel(),nulllevel2);
+        assertEquals(new NullLevel(),nulllevel3);
     }
 }

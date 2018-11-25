@@ -1,5 +1,7 @@
 package logic.brick;
 
+import visitor.Visitor;
+
 public class WoodenBrick extends AbstractBrick {
 
     public WoodenBrick(int i, int j) {
@@ -8,5 +10,15 @@ public class WoodenBrick extends AbstractBrick {
 
     public WoodenBrick() {
         this(0,0);
+    }
+
+    /**
+     * Performs the operation defined by the visitor
+     *
+     * @param visitor operation
+     */
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitWoodenBrick(this);
     }
 }
