@@ -1,0 +1,5 @@
+// ACA PONGO LOS PROBLEMAS QUE AUN NO SOLUCIONO
+
+- Ver cómo manejar las constantes (en particular width y height)
+- Codigo repetido en Input
+- arreglar caso choque lateral player

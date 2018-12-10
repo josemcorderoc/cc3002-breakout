@@ -171,7 +171,6 @@ public class MetalBrickTest implements BrickTest {
         mb1.hit();
         mb1.hit();
         assertEquals(0, mb1.getCurrentHP());
-
     }
 
     /**
