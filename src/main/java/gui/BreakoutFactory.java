@@ -16,13 +16,13 @@ import logic.brick.Brick;
 
 public final class BreakoutFactory implements EntityFactory {
 
-    public static Entity newPlayer(double x, double y, double width) {
+    public static Entity newPlayer(double x, double y, double width, double speed) {
         return Entities.builder()
                 .at(x, y)
                 .type(EntityType.PLAYER)
                 .bbox(new HitBox("Player", BoundingShape.box(100,30)))
                 .viewFromNode(new Rectangle(width, 30, Color.BLUE))
-                .with(new PlayerComponent(x,y, width, 30, 10), new CollidableComponent(true))
+                .with(new PlayerComponent(x,y, width, 30, speed), new CollidableComponent(true))
                 .build();
     }
 

@@ -1,11 +1,14 @@
 package gui;
 
 import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityEvent;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.event.EventTrigger;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -14,17 +17,20 @@ import gui.component.BrickComponent;
 import gui.component.PlayerComponent;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.property.StringPropertyBase;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import facade.HomeworkTwoFacade;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import logic.brick.Brick;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import static gui.BreakoutFactory.*;
 
@@ -37,6 +43,11 @@ public class BreakoutApp extends GameApplication {
     private int NumberOfLevels = 0;
     private int CurrentLevel = 0;
     private final int ColumnSize = 10;
+    private final double LabelYpos = WindowEdge*0.5;
+    private final double BallEdgeX = 0.85*WIDTH;
+
+
+    private Stack<Circle> ballsLeftImages = new Stack<>();
 
     // Level config
     private final int BricksInLevel = 5;
@@ -49,15 +60,20 @@ public class BreakoutApp extends GameApplication {
     private StringProperty numberOfLevelsLabel = new SimpleStringProperty("/ 0");
     private StringProperty scoreLabel = new SimpleStringProperty("900");
     private StringProperty totalScoreLabel = new SimpleStringProperty("1000");
-    private StringProperty ballsLabel = new SimpleStringProperty("Balls: 3");
+    private StringProperty ballsLabel = new SimpleStringProperty("Balls:");
+    //private StringProperty ballsLabel = new SimpleStringProperty("Balls: 3");
 
     // Player speed
-    private final double PlayerSpeed = 5;
-    private final double BallSpeed = 12;
+    private final double PlayerSpeed = 10;
+    private final double BallSpeed = 15;
 
     private boolean gameOn = false;
 
     private HomeworkTwoFacade game = new HomeworkTwoFacade();
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setWidth(WIDTH);
@@ -66,8 +82,35 @@ public class BreakoutApp extends GameApplication {
         gameSettings.setVersion("1.0");
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    private void drawDropBall() {
+        getGameScene().removeUINode(ballsLeftImages.pop());
+    }
+
+    private void drawNewBall() {
+        double x = ballsLeftImages.peek().getCenterX() + 18;
+        double y = ballsLeftImages.peek().getCenterY();
+        if (Math.abs(x - WIDTH) < 10) {
+            x = BallEdgeX;
+            y = ballsLeftImages.peek().getCenterY() + 18;
+        }
+        Circle newBall = new Circle(x, y, 5, Color.WHITE);
+        getGameScene().addUINodes(newBall);
+        ballsLeftImages.push(newBall);
+    }
+
+    private void initBallsLeft() {
+        int row = 0;
+        int column = 0;
+        for (int i = 0; i < game.getBallsLeft(); i++) {
+            if (Math.abs(WIDTH*(0.85+0.05*i) - WIDTH) < 10) {
+                column = 0;
+                row++;
+            }
+            Circle newBall = new Circle(WIDTH*(0.85+0.03*row), 0.8*LabelYpos + 10*column,5, Color.WHITE);
+            getGameScene().addUINode(newBall);
+            ballsLeftImages.push(newBall);
+            row++;
+        }
     }
 
     @Override
@@ -84,19 +127,21 @@ public class BreakoutApp extends GameApplication {
     @Override
     protected void initUI() {
 
-        Font font = new Font(HEIGHT/20.0);
-        Color color = Color.RED;
-        double y_pos = WindowEdge*0.5;
+        Font font = new Font(HEIGHT/30.0);
+        Color color = Color.WHITE;
+        double y_pos = LabelYpos;
 
         // levels
         Text levels = initText(WIDTH*0.05,y_pos, levelNameLabel, color,font);
         Text numberOfLevels = initText(WIDTH*0.3,y_pos,numberOfLevelsLabel,color,font);
         Text score = initText(WIDTH*0.4,y_pos,scoreLabel,color,font);
         Text totalScore = initText(WIDTH*0.6,y_pos,totalScoreLabel,color,font);
-        Text balls = initText(WIDTH*0.8,y_pos, ballsLabel,color,font);
+        Text balls = initText(WIDTH*0.75,y_pos, ballsLabel,color,font);
 
 
         getGameScene().addUINodes(levels, score, totalScore,numberOfLevels,balls);
+
+        initBallsLeft();
     }
 
     private Text initText(double x, double y, StringProperty label, Color color, Font font) {
@@ -128,7 +173,7 @@ public class BreakoutApp extends GameApplication {
         gameOn = false;
         getGameWorld().getEntitiesByType(EntityType.BALL, EntityType.PLAYER)
                 .forEach(Entity::removeFromWorld);
-        Entity player = newPlayer(0.5*WIDTH - 100/2, 0.9*HEIGHT, 100);
+        Entity player = newPlayer(0.5*WIDTH - 100/2, 0.9*HEIGHT, 100, PlayerSpeed);
         Entity ball = newBall(0.5*WIDTH,0.9*HEIGHT - 20, BallSpeed);
         getGameWorld().addEntities(player, ball);
     }
@@ -192,7 +237,7 @@ public class BreakoutApp extends GameApplication {
                 if (!gameOn) {
                     getGameWorld().getEntitiesByType(EntityType.BALL)
                             .forEach(entity -> entity.getComponent(PhysicsComponent.class)
-                                    .setLinearVelocity(300,-300));
+                                    .setLinearVelocity(60*BallSpeed,-60*BallSpeed));
                 }
                 gameOn = true;
             }
@@ -230,8 +275,8 @@ public class BreakoutApp extends GameApplication {
 
         input.addAction(new UserAction("Testing") {
             @Override
-            protected void onAction() {
-                System.out.println(game.getCurrentLevel().getName());
+            protected void onActionBegin() {
+                drawNewBall();
             }
         }, KeyCode.W);
     }
@@ -250,10 +295,11 @@ public class BreakoutApp extends GameApplication {
                         if (boxWall.getName().equals("BOT")) {
                             ball.removeFromWorld();
                             game.dropBall();
-                            ballsLabel.setValue("Balls: " + Integer.toString(game.getBallsLeft()));
+                            drawDropBall();
+
                             initPlayerAndBall();
                             if (game.isGameOver()) {
-                                gameOver();
+                                gameOver(false);
                             }
                         }
                     }
@@ -283,6 +329,9 @@ public class BreakoutApp extends GameApplication {
                         if (brick.getComponent(BrickComponent.class).isDestroyed()){
                             brick.removeFromWorld();
                             if (!game.getCurrentLevel().getName().equals(levelNameLabel.getValue())) {
+                                if (game.winner()) {
+                                    gameOver(true);
+                                }
                                 // new level
                                 initLevel();
                             }
@@ -292,10 +341,16 @@ public class BreakoutApp extends GameApplication {
         );
     }
 
-    private void gameOver() {
-        getDisplay().showMessageBox(
-                "I'm sorry, you lost!\n" +
-                        "          :(          ", this::exit);
+    private void gameOver(boolean winned) {
+        String message;
+        if (winned) {
+            message = "Congratulations, you winned!\n" +
+                    "          :)          ";
+        }
+        else {
+            message = "I'm sorry, you lost!\n" +
+                    "          :(          ";
+        }
+        getDisplay().showMessageBox(message, this::exit);
     }
-
 }
