@@ -38,5 +38,23 @@ public interface Brick
      */
     int remainingHits();
 
+    /**
+     * Returns a boolean depending of the type
+     * @return true if is Glass Brick
+     */
+    boolean isGlassBrick();
+
+    /**
+     * Returns a boolean depending of the type
+     * @return true if is Wooden Brick
+     */
+    boolean isWoodenBrick();
+
+    /**
+     * Returns a boolean depending of the type
+     * @return true if is Metal Brick
+     */
+    boolean isMetalBrick();
+
 
 }

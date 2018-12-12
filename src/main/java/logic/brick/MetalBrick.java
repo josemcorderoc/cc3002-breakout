@@ -21,4 +21,34 @@ public class MetalBrick extends AbstractBrick {
     public void accept(Visitor visitor) {
         visitor.visitMetalBrick(this);
     }
+
+    /**
+     * Returns a boolean depending of the type
+     *
+     * @return true if is Glass Brick
+     */
+    @Override
+    public boolean isGlassBrick() {
+        return false;
+    }
+
+    /**
+     * Returns a boolean depending of the type
+     *
+     * @return true if is Wooden Brick
+     */
+    @Override
+    public boolean isWoodenBrick() {
+        return false;
+    }
+
+    /**
+     * Returns a boolean depending of the type
+     *
+     * @return true if is Metal Brick
+     */
+    @Override
+    public boolean isMetalBrick() {
+        return true;
+    }
 }

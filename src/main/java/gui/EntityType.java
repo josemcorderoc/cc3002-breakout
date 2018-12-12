@@ -1,5 +1,5 @@
 package gui;
 
 public enum EntityType {
-    PLAYER, BALL, WALL
+    PLAYER, BALL, WALL, BRICK
 }

@@ -35,7 +35,7 @@ public class RealLevel extends AbstractLevel implements Visitable {
      * @param probOfMetal    the probability of a {@link logic.brick.MetalBrick}
      * @param seed           the seed for the random number generator
      */
-    public RealLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, int seed) {
+    public RealLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, long seed) {
         super(name, numberOfBricks, probOfGlass, probOfMetal, seed);
 
         this.nextLevel = new NullLevel();

@@ -3,3 +3,14 @@
 - Ver cómo manejar las constantes (en particular width y height)
 - Codigo repetido en Input
 - arreglar caso choque lateral player
+
+
+cambie seed a float}}
+
+
+Colores harcodeados
+
+implementé isWooden, isGlass, etc
+
+(!game.getCurrentLevel().getName().equals(levelNameLabel.getValue())) (ver como hacerlo nativamente)
+

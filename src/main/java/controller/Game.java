@@ -133,7 +133,7 @@ public class Game implements Observer {
      * @return a new level determined by the parameters
      * @see Level
      */
-    public Level newLevelWithBricksFull(String name, int numberOfBricks, double probOfGlass, double probOfMetal, int seed) {
+    public Level newLevelWithBricksFull(String name, int numberOfBricks, double probOfGlass, double probOfMetal, long seed) {
         RealLevel newLevel = new RealLevel(name, numberOfBricks, probOfGlass, probOfMetal, seed);
         newLevel.setObservableBricks();
         newLevel.addObserver(this);
@@ -150,7 +150,7 @@ public class Game implements Observer {
      * @return a new level determined by the parameters
      * @see Level
      */
-    public Level newLevelWithBricksNoMetal(String name, int numberOfBricks, double probOfGlass, int seed) {
+    public Level newLevelWithBricksNoMetal(String name, int numberOfBricks, double probOfGlass, long seed) {
         RealLevel newLevel = new RealLevel(name, numberOfBricks, probOfGlass, 0, seed);
         newLevel.setObservableBricks();
         newLevel.addObserver(this);

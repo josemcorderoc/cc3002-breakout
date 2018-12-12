@@ -34,7 +34,7 @@ public abstract class AbstractLevel extends Observable implements Level {
      * @param probOfMetal    the probability of a {@link logic.brick.MetalBrick}
      * @param seed           the seed for the random number generator
      */
-    AbstractLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, int seed) {
+    AbstractLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, long seed) {
         this.name = name;
         this.bricks = new ArrayList<>();
         this.points = 0;
