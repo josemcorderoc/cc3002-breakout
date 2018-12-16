@@ -14,6 +14,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import logic.brick.Brick;
 
+/**
+ * The factory of the entities of Breakout game
+ *
+ * @author Jose Miguel Cordero
+ */
 public final class BreakoutFactory implements EntityFactory {
 
     public static Entity newPlayer(double x, double y, double width, double speed) {
@@ -21,8 +26,8 @@ public final class BreakoutFactory implements EntityFactory {
                 .at(x, y)
                 .type(EntityType.PLAYER)
                 .bbox(new HitBox("Player", BoundingShape.box(100,30)))
-                .viewFromNode(new Rectangle(width, 30, Color.BLUE))
-                .with(new PlayerComponent(x,y, width, 30, speed), new CollidableComponent(true))
+                .viewFromNode(new Rectangle(width, 10, Color.GREEN))
+                .with(new PlayerComponent(x,y, width, 10, speed), new CollidableComponent(true))
                 .build();
     }
 
@@ -65,16 +70,16 @@ public final class BreakoutFactory implements EntityFactory {
                 new FixtureDef().restitution(1f).density(0.1f)
         );
 
-        Color color = brick.isGlassBrick() ? Color.GREEN : brick.isWoodenBrick() ? Color.BROWN : Color.STEELBLUE;
+        Color color = brick.isGlassBrick() ? Color.LIGHTBLUE : brick.isWoodenBrick() ? Color.BLUE : Color.DARKRED ;
+
 
         return Entities.builder()
                 .at(x, y)
                 .type(EntityType.BRICK)
-                .bbox(new HitBox("Brick", BoundingShape.box(width,height)))
+                .bbox(new HitBox("Brick", BoundingShape.box(width, height)))
                 .viewFromNode(new Rectangle(width, height, color))
-                .with(physics, new BrickComponent(x, y, brick), new CollidableComponent(true))
+                .with(physics, new BrickComponent(x, y, brick, color), new CollidableComponent(true))
                 .build();
-
     }
 
 }

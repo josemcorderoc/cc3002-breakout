@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityEvent;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.view.EntityView;
 import com.almasb.fxgl.event.EventTrigger;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
@@ -34,6 +35,11 @@ import java.util.Stack;
 
 import static gui.BreakoutFactory.*;
 
+/**
+ * Contains the main app of the Breakout game
+ *
+ * @author Jose Miguel Cordero
+ */
 public class BreakoutApp extends GameApplication {
 
     public static final int WIDTH = 800;
@@ -46,18 +52,20 @@ public class BreakoutApp extends GameApplication {
     private final double LabelYpos = WindowEdge*0.5;
     private final double BallEdgeX = 0.85*WIDTH;
 
+    private final double BrickWidth = (WIDTH - 2*WindowEdge)/10;
+    private final double BrickHeight = HEIGHT/20.0;
 
     private Stack<Circle> ballsLeftImages = new Stack<>();
 
     // Level config
-    private final int BricksInLevel = 5;
-    private final double ProbOfGlass = 1;
-    private final double ProfOfMetal = 0;
+    private final int BricksInLevel = 30;
+    private final double ProbOfGlass = 0.5;
+    private final double ProbOfMetal = 0.5;
 
 
 
     private StringProperty levelNameLabel = new SimpleStringProperty("Level 0");
-    private StringProperty numberOfLevelsLabel = new SimpleStringProperty("/ 0");
+    private StringProperty numberOfLevelsLabel = new SimpleStringProperty("of  0");
     private StringProperty scoreLabel = new SimpleStringProperty("900");
     private StringProperty totalScoreLabel = new SimpleStringProperty("1000");
     private StringProperty ballsLabel = new SimpleStringProperty("Balls:");
@@ -65,7 +73,7 @@ public class BreakoutApp extends GameApplication {
 
     // Player speed
     private final double PlayerSpeed = 10;
-    private final double BallSpeed = 15;
+    private final double BallSpeed = 10;
 
     private boolean gameOn = false;
 
@@ -133,7 +141,7 @@ public class BreakoutApp extends GameApplication {
 
         // levels
         Text levels = initText(WIDTH*0.05,y_pos, levelNameLabel, color,font);
-        Text numberOfLevels = initText(WIDTH*0.3,y_pos,numberOfLevelsLabel,color,font);
+        Text numberOfLevels = initText(WIDTH*0.2,y_pos,numberOfLevelsLabel,color,font);
         Text score = initText(WIDTH*0.4,y_pos,scoreLabel,color,font);
         Text totalScore = initText(WIDTH*0.6,y_pos,totalScoreLabel,color,font);
         Text balls = initText(WIDTH*0.75,y_pos, ballsLabel,color,font);
@@ -176,6 +184,8 @@ public class BreakoutApp extends GameApplication {
         Entity player = newPlayer(0.5*WIDTH - 100/2, 0.9*HEIGHT, 100, PlayerSpeed);
         Entity ball = newBall(0.5*WIDTH,0.9*HEIGHT - 20, BallSpeed);
         getGameWorld().addEntities(player, ball);
+
+
     }
 
     private void initLevelBricks() {
@@ -191,10 +201,8 @@ public class BreakoutApp extends GameApplication {
                 column = 0;
                 row++;
             }
-            double width = (WIDTH - 2*WindowEdge)/10;
-            double height = HEIGHT/20.0;
-            getGameWorld().addEntity(newBrick(column*width + WindowEdge, row*height + WindowEdge,
-                    width, height, brick));
+            getGameWorld().addEntity(newBrick(column*BrickWidth + WindowEdge, row*BrickHeight + WindowEdge,
+                    BrickWidth, BrickHeight, brick));
             column++;
         }
     }
@@ -248,10 +256,11 @@ public class BreakoutApp extends GameApplication {
             protected void onActionBegin() {
                 if (NumberOfLevels == 0) {
                     game.setCurrentLevel(
-                            game.newLevelWithBricksNoMetal(
+                            game.newLevelWithBricksFull(
                                     "Level " + Integer.toString(NumberOfLevels+1),
                                     BricksInLevel,
                                     ProbOfGlass,
+                                    ProbOfMetal,
                                     System.currentTimeMillis()
                             )
                     );
@@ -259,16 +268,17 @@ public class BreakoutApp extends GameApplication {
                 }
                 else {
                     game.addPlayingLevel(
-                            game.newLevelWithBricksNoMetal(
+                            game.newLevelWithBricksFull(
                                     "Level " + Integer.toString(NumberOfLevels+1),
                                     BricksInLevel,
                                     ProbOfGlass,
+                                    ProbOfMetal,
                                     System.currentTimeMillis()
                             )
                     );
                 }
                 NumberOfLevels++;
-                numberOfLevelsLabel.setValue("/ " + Integer.toString(NumberOfLevels));
+                numberOfLevelsLabel.setValue("of  " + Integer.toString(NumberOfLevels));
 
             }
         }, KeyCode.N);
@@ -326,6 +336,13 @@ public class BreakoutApp extends GameApplication {
                     protected void onHitBoxTrigger(Entity ball, Entity brick,
                                                    HitBox boxBall, HitBox boxBrick) {
                         brick.getComponent(BrickComponent.class).hit();
+                        brick.setView(
+                                new Rectangle(
+                                        BrickWidth,
+                                        BrickHeight,
+                                        brick.getComponent(BrickComponent.class).colorDowngrade()
+                                )
+                        );
                         if (brick.getComponent(BrickComponent.class).isDestroyed()){
                             brick.removeFromWorld();
                             if (!game.getCurrentLevel().getName().equals(levelNameLabel.getValue())) {
