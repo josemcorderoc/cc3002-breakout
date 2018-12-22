@@ -4,6 +4,8 @@ import logic.level.Level;
 import logic.level.NullLevel;
 import logic.level.RealLevel;
 import visitor.NotifyVisitor;
+import visitor.Visitable;
+import visitor.Visitor;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -14,7 +16,7 @@ import java.util.Observer;
  *
  * @author Juan-Pablo Silva
  */
-public class Game implements Observer {
+public class Game extends Observable implements Observer, Visitable {
 
     private int balls;
     private int currentScore;
@@ -56,7 +58,6 @@ public class Game implements Observer {
      */
     public void setCurrentScore(int newCurrentScore) {
         currentScore = newCurrentScore;
-
     }
 
     /**
@@ -113,13 +114,18 @@ public class Game implements Observer {
     @Override
     public void update(Observable observable, Object o) {
         NotifyVisitor visitor = (NotifyVisitor) o;
-
         currentScore += visitor.getScore();
         balls += visitor.getExtraBalls();
 
-        if (currentLevel.winned()) {
+        if (visitor.getDestroyBricks()) {
+            currentLevel.destroyAllBricks();
+        }
+
+        if (visitor.getChangeLevel()) {
             goNextLevel();
         }
+        setChanged();
+        accept(visitor);
     }
 
     /**
@@ -141,6 +147,25 @@ public class Game implements Observer {
     }
 
     /**
+     * Creates a new level with the given parameters.
+     *
+     * @param name           the name of the level
+     * @param numberOfBricks the number of bricks in the level
+     * @param probOfGlass    the probability of a {@link logic.brick.GlassBrick}
+     * @param probOfMetal    the probability of a {@link logic.brick.MetalBrick}
+     * @param seed           the seed for the random number generator
+     * @return a new level determined by the parameters
+     * @see Level
+     */
+    public Level newLevelWithAllBricks(String name, int numberOfBricks, double probOfGlass, double probOfMetal,
+                                       double probOfPlastic, long seed) {
+        RealLevel newLevel = new RealLevel(name, numberOfBricks, probOfGlass, probOfMetal, probOfPlastic, seed);
+        newLevel.setObservableBricks();
+        newLevel.addObserver(this);
+        return newLevel;
+    }
+
+    /**
      * Creates a new level with the given parameters with no metal bricks.
      *
      * @param name           the name of the level
@@ -155,5 +180,15 @@ public class Game implements Observer {
         newLevel.setObservableBricks();
         newLevel.addObserver(this);
         return newLevel;
+    }
+
+    /**
+     * Performs the operation defined by the visitor
+     *
+     * @param visitor operation
+     */
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitGame(this);
     }
 }

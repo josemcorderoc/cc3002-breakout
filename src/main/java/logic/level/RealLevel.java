@@ -19,7 +19,6 @@ public class RealLevel extends AbstractLevel implements Visitable {
     private List<Observer> observers;
     private boolean stateChange;
 
-
     /**
      * Default no-parameters RealLevel constructor
      */
@@ -37,6 +36,22 @@ public class RealLevel extends AbstractLevel implements Visitable {
      */
     public RealLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, long seed) {
         super(name, numberOfBricks, probOfGlass, probOfMetal, seed);
+
+        this.nextLevel = new NullLevel();
+        this.currentPoints = 0;
+    }
+
+    /**
+     * RealLevel constructor with plastic
+     * @param name
+     * @param numberOfBricks
+     * @param probOfGlass
+     * @param probOfMetal
+     * @param probOfPlastic
+     * @param seed
+     */
+    public RealLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal, double probOfPlastic, long seed) {
+        super(name, numberOfBricks, probOfGlass, probOfMetal, probOfPlastic, seed);
 
         this.nextLevel = new NullLevel();
         this.currentPoints = 0;
@@ -116,6 +131,18 @@ public class RealLevel extends AbstractLevel implements Visitable {
     @Override
     public boolean winned() {
         return currentPoints >= getPoints();
+    }
+
+    /**
+     * Destroys all bricks in the level
+     */
+    @Override
+    public void destroyAllBricks() {
+        for(Brick brick : getBricks()) {
+            while(!brick.isDestroyed()) {
+                brick.hit();
+            }
+        }
     }
 
     /**

@@ -3,24 +3,14 @@ package logic.brick;
 import visitor.Visitor;
 
 /**
- * Metal brick: adds a new ball when destroyed
+ * Plastic brick: destroy all the bricks on level when destroyed
  *
  * @author Jose Miguel Cordero
  */
-public class MetalBrick extends AbstractBrick {
+public class PlasticBrick extends AbstractBrick {
 
-    public MetalBrick() {
-        super(10, 0);
-    }
-
-    /**
-     * Performs the operation defined by the visitor
-     *
-     * @param visitor operation
-     */
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitMetalBrick(this);
+    public PlasticBrick() {
+        super(15, 0);
     }
 
     /**
@@ -50,7 +40,7 @@ public class MetalBrick extends AbstractBrick {
      */
     @Override
     public boolean isMetalBrick() {
-        return true;
+        return false;
     }
 
     /**
@@ -60,6 +50,16 @@ public class MetalBrick extends AbstractBrick {
      */
     @Override
     public boolean isPlasticBrick() {
-        return false;
+        return true;
+    }
+
+    /**
+     * Performs the operation defined by the visitor
+     *
+     * @param visitor operation
+     */
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitPlasticBrick(this);
     }
 }

@@ -1,7 +1,9 @@
 package visitor;
 
+import controller.Game;
 import logic.brick.GlassBrick;
 import logic.brick.MetalBrick;
+import logic.brick.PlasticBrick;
 import logic.brick.WoodenBrick;
 import logic.level.RealLevel;
 
@@ -14,17 +16,32 @@ public class NotifyVisitor implements Visitor {
 
     private int score = 0;
     private int extraBalls = 0;
+    private boolean destroyBricks = false;
+    private boolean winner = false;
+    private boolean changeLevel = false;
 
     public int getScore() {
         return score;
+    }
+
+    public boolean getWinner() {
+        return winner;
     }
 
     public int getExtraBalls() {
         return extraBalls;
     }
 
+    public boolean getChangeLevel() {
+        return changeLevel;
+    }
+
+    public boolean getDestroyBricks() {
+        return destroyBricks;
+    }
     @Override
     public void visitRealLevel(RealLevel level) {
+        changeLevel = level.winned();
         level.notifyObservers(this);
     }
 
@@ -46,5 +63,19 @@ public class NotifyVisitor implements Visitor {
     public void visitWoodenBrick(WoodenBrick brick) {
         score += brick.getScore();
         brick.notifyObservers(this);
+    }
+
+    @Override
+    public void visitPlasticBrick(PlasticBrick brick) {
+        score += brick.getScore();
+        destroyBricks = true;
+        brick.notifyObservers(this);
+    }
+
+    @Override
+    public void visitGame(Game game) {
+        score = game.getCurrentScore();
+        winner = game.winner();
+        game.notifyObservers(this);
     }
 }

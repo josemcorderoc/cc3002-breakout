@@ -1,5 +1,6 @@
 package gui;
 
+import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
@@ -21,6 +22,14 @@ import logic.brick.Brick;
  */
 public final class BreakoutFactory implements EntityFactory {
 
+    /**
+     * Creates a new entity player
+     * @param x x pos
+     * @param y y pos
+     * @param width width of the player
+     * @param speed speed of the player
+     * @return Entity player
+     */
     public static Entity newPlayer(double x, double y, double width, double speed) {
         return Entities.builder()
                 .at(x, y)
@@ -31,6 +40,10 @@ public final class BreakoutFactory implements EntityFactory {
                 .build();
     }
 
+    /**
+     * Creates a new entity background
+     * @return Entity background
+     */
     public static Entity newBackground() {
         return Entities.builder()
                 .viewFromNode(new Rectangle(800,800,Color.BLACK))
@@ -38,6 +51,13 @@ public final class BreakoutFactory implements EntityFactory {
                 .build();
     }
 
+    /**
+     * Creates a new entity ball
+     * @param x x pos
+     * @param y y pos
+     * @param speed ball speed
+     * @return Entity ball
+     */
     public static Entity newBall(double x, double y, double speed) {
 
         PhysicsComponent physics = new PhysicsComponent();
@@ -55,6 +75,10 @@ public final class BreakoutFactory implements EntityFactory {
                 .build();
     }
 
+    /**
+     * Creates a new entity walls
+     * @return Entity walls
+     */
     public static Entity newWalls() {
         Entity walls = Entities.makeScreenBounds(100);
         walls.setType(EntityType.WALL);
@@ -62,6 +86,15 @@ public final class BreakoutFactory implements EntityFactory {
         return walls;
     }
 
+    /**
+     * Creates a new entity brick
+     * @param x x pos
+     * @param y y pos
+     * @param width brick width
+     * @param height brick heigth
+     * @param brick {@Brick} associated with the entity
+     * @return Entity brick
+     */
     public static Entity newBrick(double x, double y, double width, double height, Brick brick) {
 
         PhysicsComponent physics = new PhysicsComponent();
@@ -70,8 +103,8 @@ public final class BreakoutFactory implements EntityFactory {
                 new FixtureDef().restitution(1f).density(0.1f)
         );
 
-        Color color = brick.isGlassBrick() ? Color.LIGHTBLUE : brick.isWoodenBrick() ? Color.BLUE : Color.DARKRED ;
-
+        Color color = brick.isGlassBrick() ? Color.LIGHTBLUE : brick.isWoodenBrick() ? Color.BLUE :
+                brick.isMetalBrick() ? Color.DARKRED : Color.YELLOW;
 
         return Entities.builder()
                 .at(x, y)

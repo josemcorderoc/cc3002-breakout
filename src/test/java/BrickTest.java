@@ -3,21 +3,6 @@ package test.java;
 public interface BrickTest {
 
     /**
-     * Test getI method
-     */
-    void testGetI();
-
-    /**
-     * Test getJ method
-     */
-    void testGetJ();
-
-    /**
-     * Test setPosition method
-     */
-    void testSetPosition();
-
-    /**
      * Test getTotalHP method
      */
     void testGetTotalHP();

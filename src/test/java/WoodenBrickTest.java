@@ -28,43 +28,7 @@ public class WoodenBrickTest implements BrickTest {
     public void setUp() {
         wb1 = new WoodenBrick();
         wb2 = new WoodenBrick();
-        wb3 = new WoodenBrick(2,3);
-    }
-    /**
-     * Test getI method
-     */
-    @Override
-    @Test
-    public void testGetI() {
-        assertEquals(0, wb1.getI());
-        assertEquals(0, wb2.getI());
-        assertEquals(2, wb3.getI());
-    }
-
-    /**
-     * Test getJ method
-     */
-    @Override
-    @Test
-    public void testGetJ() {
-        assertEquals(0, wb1.getJ());
-        assertEquals(0, wb2.getJ());
-        assertEquals(3, wb3.getJ());
-    }
-
-    /**
-     * Test setPosition method
-     */
-    @Override
-    @Test
-    public void testSetPosition() {
-        wb1.setPosition(5,9);
-        wb3.setPosition(0,0);
-        assertEquals(5, wb1.getI());
-        assertEquals(9, wb1.getJ());
-        assertEquals(0, wb3.getI());
-        assertEquals(0, wb3.getJ());
-
+        wb3 = new WoodenBrick();
     }
 
     /**
@@ -152,7 +116,6 @@ public class WoodenBrickTest implements BrickTest {
         assertEquals(new WoodenBrick(), new WoodenBrick());
         assertEquals(wb1, new WoodenBrick());
         assertEquals(wb1, wb2);
-        assertNotEquals(wb1,wb3);
     }
 
     /**

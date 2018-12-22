@@ -80,4 +80,9 @@ public interface Level extends Observer {
      * @return True if level is winned, false if is not
      */
     boolean winned();
+
+    /**
+     * Destroys all bricks in the level
+     */
+    void destroyAllBricks();
 }

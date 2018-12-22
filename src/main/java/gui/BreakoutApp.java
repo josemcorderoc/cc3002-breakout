@@ -1,15 +1,10 @@
 package gui;
 
+import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.EntityEvent;
-import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.entity.view.EntityView;
-import com.almasb.fxgl.event.EventTrigger;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -19,7 +14,6 @@ import gui.component.PlayerComponent;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import facade.HomeworkTwoFacade;
 import javafx.scene.paint.Color;
@@ -28,10 +22,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import logic.brick.Brick;
+import visitor.NotifyVisitor;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 import static gui.BreakoutFactory.*;
 
@@ -40,44 +33,45 @@ import static gui.BreakoutFactory.*;
  *
  * @author Jose Miguel Cordero
  */
-public class BreakoutApp extends GameApplication {
+public class BreakoutApp extends GameApplication implements Observer {
 
+    // Window config
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
-    public static final double WindowEdge =  WIDTH/10.0;
 
-    private int NumberOfLevels = 0;
-    private int CurrentLevel = 0;
+    private static final double WindowEdge =  WIDTH/10.0;
     private final int ColumnSize = 10;
     private final double LabelYpos = WindowEdge*0.5;
     private final double BallEdgeX = 0.85*WIDTH;
-
+    private final double BallEdgeY = 0.8*LabelYpos;
     private final double BrickWidth = (WIDTH - 2*WindowEdge)/10;
     private final double BrickHeight = HEIGHT/20.0;
 
     private Stack<Circle> ballsLeftImages = new Stack<>();
 
-    // Level config
-    private final int BricksInLevel = 30;
+    // Game config
+    private HomeworkTwoFacade game;
+
+    private int NumberOfLevels = 0;
+    private final int BricksInLevel = 20;
     private final double ProbOfGlass = 0.5;
     private final double ProbOfMetal = 0.5;
-
-
-
-    private StringProperty levelNameLabel = new SimpleStringProperty("Level 0");
-    private StringProperty numberOfLevelsLabel = new SimpleStringProperty("of  0");
-    private StringProperty scoreLabel = new SimpleStringProperty("900");
-    private StringProperty totalScoreLabel = new SimpleStringProperty("1000");
-    private StringProperty ballsLabel = new SimpleStringProperty("Balls:");
-    //private StringProperty ballsLabel = new SimpleStringProperty("Balls: 3");
-
-    // Player speed
-    private final double PlayerSpeed = 10;
-    private final double BallSpeed = 10;
-
+    private final double ProbOfPlastic = 0.1;
     private boolean gameOn = false;
 
-    private HomeworkTwoFacade game = new HomeworkTwoFacade();
+    // Text labels
+    private StringProperty levelNameLabel = new SimpleStringProperty("Level 0");
+    private StringProperty numberOfLevelsLabel = new SimpleStringProperty("/ 0");
+    private StringProperty scoreLabel = new SimpleStringProperty("Score:  000000");
+    private StringProperty ballsLabel = new SimpleStringProperty("Balls:");
+
+
+    private Text createLevels;
+    private Text launchBall;
+
+    // Player and ball speed
+    private final double PlayerSpeed = 15;
+    private final double BallSpeed = 10;
 
     public static void main(String[] args) {
         launch(args);
@@ -95,59 +89,61 @@ public class BreakoutApp extends GameApplication {
     }
 
     private void drawNewBall() {
-        double x = ballsLeftImages.peek().getCenterX() + 18;
-        double y = ballsLeftImages.peek().getCenterY();
-        if (Math.abs(x - WIDTH) < 10) {
+        double x, y;
+
+        if (ballsLeftImages.isEmpty()) {
             x = BallEdgeX;
-            y = ballsLeftImages.peek().getCenterY() + 18;
+            y = BallEdgeY;
         }
-        Circle newBall = new Circle(x, y, 5, Color.WHITE);
+        else {
+            x = ballsLeftImages.peek().getCenterX() + 25;
+            y = ballsLeftImages.peek().getCenterY();
+            if (Math.abs(x - WIDTH) < 10) {
+                x = BallEdgeX;
+                y = ballsLeftImages.peek().getCenterY() + 25;
+            }
+        }
+        Circle newBall = new Circle(x, y, 7, Color.WHITE);
         getGameScene().addUINodes(newBall);
         ballsLeftImages.push(newBall);
     }
 
     private void initBallsLeft() {
-        int row = 0;
-        int column = 0;
         for (int i = 0; i < game.getBallsLeft(); i++) {
-            if (Math.abs(WIDTH*(0.85+0.05*i) - WIDTH) < 10) {
-                column = 0;
-                row++;
-            }
-            Circle newBall = new Circle(WIDTH*(0.85+0.03*row), 0.8*LabelYpos + 10*column,5, Color.WHITE);
-            getGameScene().addUINode(newBall);
-            ballsLeftImages.push(newBall);
-            row++;
+            drawNewBall();
         }
     }
 
     @Override
     protected void initGame() {
+        game = new HomeworkTwoFacade();
+        game.game.addObserver(this);
         getGameWorld().addEntities(newBackground(), newWalls());
-
-        /*
-        getEventBus().addEventTrigger(new EventTrigger<EntityEvent>(
-                () ->
-        ));
-        */
     }
 
     @Override
     protected void initUI() {
 
-        Font font = new Font(HEIGHT/30.0);
+        Font font = FXGL.getAssetLoader().loadFont("robotcrush.ttf").newFont(HEIGHT/20.0);
         Color color = Color.WHITE;
         double y_pos = LabelYpos;
 
         // levels
         Text levels = initText(WIDTH*0.05,y_pos, levelNameLabel, color,font);
         Text numberOfLevels = initText(WIDTH*0.2,y_pos,numberOfLevelsLabel,color,font);
-        Text score = initText(WIDTH*0.4,y_pos,scoreLabel,color,font);
-        Text totalScore = initText(WIDTH*0.6,y_pos,totalScoreLabel,color,font);
-        Text balls = initText(WIDTH*0.75,y_pos, ballsLabel,color,font);
+        Text score = initText(WIDTH*0.35,y_pos,scoreLabel,color,font);
+        Text balls = initText(WIDTH*0.7,y_pos, ballsLabel,color,font);
+
+        Font font2 = FXGL.getAssetLoader().loadFont("robotcrush.ttf").newFont(HEIGHT/15.0);
 
 
-        getGameScene().addUINodes(levels, score, totalScore,numberOfLevels,balls);
+        createLevels = initText(0.2*WIDTH,0.7*HEIGHT, new SimpleStringProperty("Press key N to create levels!"),
+                color,font2);
+        launchBall = initText(0.3*WIDTH,0.7*HEIGHT, new SimpleStringProperty("Press SPACE to start!"),
+                color,font2);
+
+
+        getGameScene().addUINodes(levels, score, numberOfLevels, balls, createLevels);
 
         initBallsLeft();
     }
@@ -160,11 +156,6 @@ public class BreakoutApp extends GameApplication {
         text.setFont(font);
         text.setFill(color);
         return text;
-    }
-
-
-    private void initEventTriggers() {
-
     }
 
     private void initLevel() {
@@ -184,8 +175,6 @@ public class BreakoutApp extends GameApplication {
         Entity player = newPlayer(0.5*WIDTH - 100/2, 0.9*HEIGHT, 100, PlayerSpeed);
         Entity ball = newBall(0.5*WIDTH,0.9*HEIGHT - 20, BallSpeed);
         getGameWorld().addEntities(player, ball);
-
-
     }
 
     private void initLevelBricks() {
@@ -196,7 +185,6 @@ public class BreakoutApp extends GameApplication {
         Collections.shuffle(currentLevelBricks);
 
         for (Brick brick : currentLevelBricks) {
-            //TO-DO: arreglar x,y
             if (column == ColumnSize) {
                 column = 0;
                 row++;
@@ -220,7 +208,7 @@ public class BreakoutApp extends GameApplication {
                 if (!gameOn) {
                     getGameWorld().getEntitiesByType(EntityType.BALL)
                             .forEach(entity -> entity.getComponent(PhysicsComponent.class)
-                                    .reposition(new Point2D(entity.getX() + 10, entity.getY())));
+                                    .reposition(new Point2D(entity.getX() + PlayerSpeed, entity.getY())));
                 }
 
             }
@@ -234,7 +222,7 @@ public class BreakoutApp extends GameApplication {
                 if (!gameOn) {
                     getGameWorld().getEntitiesByType(EntityType.BALL)
                             .forEach(entity -> entity.getComponent(PhysicsComponent.class)
-                                    .reposition(new Point2D(entity.getX() - 10, entity.getY())));
+                                    .reposition(new Point2D(entity.getX() - PlayerSpeed, entity.getY())));
                 }
             }
         }, KeyCode.A);
@@ -243,6 +231,7 @@ public class BreakoutApp extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (!gameOn) {
+                    getGameScene().removeUINode(launchBall);
                     getGameWorld().getEntitiesByType(EntityType.BALL)
                             .forEach(entity -> entity.getComponent(PhysicsComponent.class)
                                     .setLinearVelocity(60*BallSpeed,-60*BallSpeed));
@@ -256,29 +245,33 @@ public class BreakoutApp extends GameApplication {
             protected void onActionBegin() {
                 if (NumberOfLevels == 0) {
                     game.setCurrentLevel(
-                            game.newLevelWithBricksFull(
+                            game.newLevelWithAllBricks(
                                     "Level " + Integer.toString(NumberOfLevels+1),
                                     BricksInLevel,
                                     ProbOfGlass,
                                     ProbOfMetal,
+                                    ProbOfPlastic,
                                     System.currentTimeMillis()
                             )
                     );
                     initLevel();
+                    getGameScene().removeUINode(createLevels);
+                    getGameScene().addUINode(launchBall);
                 }
                 else {
                     game.addPlayingLevel(
-                            game.newLevelWithBricksFull(
+                            game.newLevelWithAllBricks(
                                     "Level " + Integer.toString(NumberOfLevels+1),
                                     BricksInLevel,
                                     ProbOfGlass,
                                     ProbOfMetal,
+                                    ProbOfPlastic,
                                     System.currentTimeMillis()
                             )
                     );
                 }
                 NumberOfLevels++;
-                numberOfLevelsLabel.setValue("of  " + Integer.toString(NumberOfLevels));
+                numberOfLevelsLabel.setValue("/  " + Integer.toString(NumberOfLevels));
 
             }
         }, KeyCode.N);
@@ -286,7 +279,7 @@ public class BreakoutApp extends GameApplication {
         input.addAction(new UserAction("Testing") {
             @Override
             protected void onActionBegin() {
-                drawNewBall();
+                System.out.println(game.getCurrentLevel().getNumberOfBricks());
             }
         }, KeyCode.W);
     }
@@ -322,7 +315,6 @@ public class BreakoutApp extends GameApplication {
                     @Override
                     protected void onHitBoxTrigger(Entity ball, Entity player,
                                                    HitBox boxBall, HitBox boxPlayer) {
-                        //TO-DO: arreglar caso choque lateral
                         PhysicsComponent physics = ball.getComponent(PhysicsComponent.class);
                         physics.setVelocityY(-physics.getVelocityY());
                     }
@@ -336,6 +328,7 @@ public class BreakoutApp extends GameApplication {
                     protected void onHitBoxTrigger(Entity ball, Entity brick,
                                                    HitBox boxBall, HitBox boxBrick) {
                         brick.getComponent(BrickComponent.class).hit();
+                        getAudioPlayer().playSound(brick.getComponent(BrickComponent.class).getHitSound());
                         brick.setView(
                                 new Rectangle(
                                         BrickWidth,
@@ -344,14 +337,8 @@ public class BreakoutApp extends GameApplication {
                                 )
                         );
                         if (brick.getComponent(BrickComponent.class).isDestroyed()){
+                            getAudioPlayer().playSound("destroy.wav");
                             brick.removeFromWorld();
-                            if (!game.getCurrentLevel().getName().equals(levelNameLabel.getValue())) {
-                                if (game.winner()) {
-                                    gameOver(true);
-                                }
-                                // new level
-                                initLevel();
-                            }
                         }
                     }
                 }
@@ -369,5 +356,22 @@ public class BreakoutApp extends GameApplication {
                     "          :(          ";
         }
         getDisplay().showMessageBox(message, this::exit);
+    }
+
+
+    @Override
+    public void update(Observable observable, Object o) {
+        NotifyVisitor visitor = (NotifyVisitor) o;
+        scoreLabel.setValue("Score:  " + String.format("%06d",visitor.getScore()));
+        for (int i = 0; i < visitor.getExtraBalls(); i++) {
+            drawNewBall();
+        }
+        if (visitor.getWinner()) {
+            gameOver(true);
+        }
+        if (visitor.getChangeLevel()) {
+            initLevel();
+            getGameScene().addUINode(launchBall);
+        }
     }
 }

@@ -57,6 +57,41 @@ public abstract class AbstractLevel extends Observable implements Level {
     }
 
     /**
+     * AbstractLevel constructor with plastic
+     * @param name           the name of the level
+     * @param numberOfBricks the number of bricks in the level
+     * @param probOfGlass    the probability of a {@link logic.brick.GlassBrick}
+     * @param probOfMetal    the probability of a {@link logic.brick.MetalBrick}
+     * @param seed           the seed for the random number generator
+     */
+    AbstractLevel(String name, int numberOfBricks, double probOfGlass, double probOfMetal,
+                  double probOfPlastic, long seed) {
+        this.name = name;
+        this.bricks = new ArrayList<>();
+        this.points = 0;
+
+        // creation of brick list
+        Random random = new Random(seed);
+        for(int i = 0; i < numberOfBricks; i++) {
+            Brick newBrick = (random.nextDouble() < probOfGlass) ? new GlassBrick() : new WoodenBrick();
+            bricks.add(newBrick);
+            points += newBrick.getScore();
+        }
+
+        for(int i = 0; i < numberOfBricks; i++) {
+            if (random.nextDouble() < probOfMetal) {
+                bricks.add(new MetalBrick());
+            }
+        }
+
+        if (random.nextDouble() < probOfPlastic) {
+            bricks.add(new PlasticBrick());
+        }
+
+        this.numberOfBricks = bricks.size();
+    }
+
+    /**
      * Gets the level's name. Each level must have a name.
      *
      * @return the table's name

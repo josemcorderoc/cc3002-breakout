@@ -99,6 +99,13 @@ public class NullLevel extends AbstractLevel {
         return isEnd;
     }
 
+    /**
+     * Destroys all bricks in the level
+     */
+    @Override
+    public void destroyAllBricks() {
+    }
+
     @Override
     public void update(Observable observable, Object o) {
     }

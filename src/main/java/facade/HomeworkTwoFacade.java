@@ -20,6 +20,10 @@ public class HomeworkTwoFacade {
      */
     public Game game = new Game(3);
 
+    public Level newLevelWithAllBricks(String name, int numberOfBricks, double probOfGlass,
+                                       double probOfMetal, double probOfPlastic, long seed) {
+        return game.newLevelWithAllBricks(name, numberOfBricks, probOfGlass, probOfMetal, probOfPlastic, seed);
+    }
     /**
      * Creates a new level with the given parameters.
      *

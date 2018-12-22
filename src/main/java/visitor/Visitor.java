@@ -1,7 +1,9 @@
 package visitor;
 
+import controller.Game;
 import logic.brick.GlassBrick;
 import logic.brick.MetalBrick;
+import logic.brick.PlasticBrick;
 import logic.brick.WoodenBrick;
 import logic.level.RealLevel;
 
@@ -35,4 +37,18 @@ public interface Visitor {
      * @param brick wooden brick
      */
     void visitWoodenBrick(WoodenBrick brick);
+
+    /**
+     * Implements operation defined by the visitor requested by {@link PlasticBrick}
+     * @param brick plastic brick
+     */
+    void visitPlasticBrick(PlasticBrick brick);
+
+    /**
+     * Implements operation defined by the visitor requested by {@link Game}
+     * @param game game
+     */
+    void visitGame(Game game);
+
+
 }

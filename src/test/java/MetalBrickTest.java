@@ -24,43 +24,7 @@ public class MetalBrickTest implements BrickTest {
     public void setUp() {
         mb1 = new MetalBrick();
         mb2 = new MetalBrick();
-        mb3 = new MetalBrick(2,3);
-    }
-    /**
-     * Test getI method
-     */
-    @Override
-    @Test
-    public void testGetI() {
-        assertEquals(0, mb1.getI());
-        assertEquals(0, mb2.getI());
-        assertEquals(2, mb3.getI());
-    }
-
-    /**
-     * Test getJ method
-     */
-    @Override
-    @Test
-    public void testGetJ() {
-        assertEquals(0, mb1.getJ());
-        assertEquals(0, mb2.getJ());
-        assertEquals(3, mb3.getJ());
-    }
-
-    /**
-     * Test setPosition method
-     */
-    @Override
-    @Test
-    public void testSetPosition() {
-        mb1.setPosition(5,11);
-        mb3.setPosition(0,0);
-        assertEquals(5, mb1.getI());
-        assertEquals(11, mb1.getJ());
-        assertEquals(0, mb3.getI());
-        assertEquals(0, mb3.getJ());
-
+        mb3 = new MetalBrick();
     }
 
     /**
@@ -148,7 +112,6 @@ public class MetalBrickTest implements BrickTest {
         assertEquals(new MetalBrick(), new MetalBrick());
         assertEquals(mb1, new MetalBrick());
         assertEquals(mb1, mb2);
-        assertNotEquals(mb1,mb3);
     }
 
     /**

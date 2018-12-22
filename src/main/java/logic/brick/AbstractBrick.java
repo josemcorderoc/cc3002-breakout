@@ -15,41 +15,12 @@ public abstract class AbstractBrick extends Observable implements Brick, Visitab
     private int totalHP;
     private int currentHP;
     private int score;
-    private int i,j;
 
 
-    AbstractBrick(int hitPoints, int score, int i, int j) {
+    AbstractBrick(int hitPoints, int score) {
         this.totalHP = hitPoints;
         this.currentHP = hitPoints;
         this.score = score;
-        this.i = i;
-        this.j = j;
-    }
-
-    /**
-     * row (i) getter
-     * @return i
-     */
-    public int getI() {
-        return i;
-    }
-
-    /**
-     * column (j) getter
-     * @return j
-     */
-    public int getJ() {
-        return j;
-    }
-
-    /**
-     * Position (i,j) setter
-     * @param i row
-     * @param j column
-     */
-    public void setPosition(int i, int j) {
-        this.i = i;
-        this.j = j;
     }
 
     /**
@@ -111,8 +82,7 @@ public abstract class AbstractBrick extends Observable implements Brick, Visitab
         if (this.getClass() == o.getClass()) {
             return this.currentHP == ((AbstractBrick)o).currentHP &&
                     this.totalHP == ((AbstractBrick)o).totalHP &&
-                    this.score == ((AbstractBrick)o).score &&
-                    this.i == ((AbstractBrick)o).i && this.j == ((AbstractBrick)o).j;
+                    this.score == ((AbstractBrick)o).score;
         }
         return false;
     }

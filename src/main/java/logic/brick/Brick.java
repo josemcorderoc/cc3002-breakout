@@ -56,5 +56,11 @@ public interface Brick
      */
     boolean isMetalBrick();
 
+    /**
+     * Returns a boolean depending of the type
+     * @return true if is Plastic Brick
+     */
+    boolean isPlasticBrick();
+
 
 }

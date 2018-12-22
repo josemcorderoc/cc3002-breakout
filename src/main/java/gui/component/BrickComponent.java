@@ -3,7 +3,6 @@ package gui.component;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.PositionComponent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import logic.brick.Brick;
 
 public class BrickComponent extends Component {
@@ -11,6 +10,7 @@ public class BrickComponent extends Component {
     private PositionComponent position;
     private Brick brick;
     private Color color;
+    private String hitSound;
 
     public BrickComponent(double x, double y, Brick brick, Color color) {
         position = new PositionComponent();
@@ -19,6 +19,9 @@ public class BrickComponent extends Component {
 
         this.brick = brick;
         this.color = color;
+
+        hitSound = brick.isGlassBrick() ? "glass.wav" : brick.isWoodenBrick() ? "wooden.wav" :
+                brick.isMetalBrick() ? "metal.wav" : "plastic.wav";
     }
 
     public Brick getBrick() {
@@ -32,6 +35,10 @@ public class BrickComponent extends Component {
 
     public void hit() {
         brick.hit();
+    }
+
+    public String getHitSound() {
+        return hitSound;
     }
 
     public boolean isDestroyed() {

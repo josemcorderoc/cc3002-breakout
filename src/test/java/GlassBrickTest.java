@@ -22,43 +22,7 @@ public class GlassBrickTest implements BrickTest {
     public void setUp() {
         gb1 = new GlassBrick();
         gb2 = new GlassBrick();
-        gb3 = new GlassBrick(2,3);
-    }
-    /**
-     * Test getI method
-     */
-    @Override
-    @Test
-    public void testGetI() {
-        assertEquals(0, gb1.getI());
-        assertEquals(0, gb2.getI());
-        assertEquals(2, gb3.getI());
-    }
-
-    /**
-     * Test getJ method
-     */
-    @Override
-    @Test
-    public void testGetJ() {
-        assertEquals(0, gb1.getJ());
-        assertEquals(0, gb2.getJ());
-        assertEquals(3, gb3.getJ());
-    }
-
-    /**
-     * Test setPosition method
-     */
-    @Override
-    @Test
-    public void testSetPosition() {
-        gb1.setPosition(7,9);
-        gb3.setPosition(0,0);
-        assertEquals(7, gb1.getI());
-        assertEquals(9, gb1.getJ());
-        assertEquals(0, gb3.getI());
-        assertEquals(0, gb3.getJ());
-
+        gb3 = new GlassBrick();
     }
 
     /**
@@ -146,7 +110,6 @@ public class GlassBrickTest implements BrickTest {
         assertEquals(new GlassBrick(), new GlassBrick());
         assertEquals(gb1, new GlassBrick());
         assertEquals(gb1, gb2);
-        assertNotEquals(gb1,gb3);
     }
 
     /**
