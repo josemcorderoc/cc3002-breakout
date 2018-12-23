@@ -4,6 +4,11 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.PositionComponent;
 import gui.BreakoutApp;
 
+/**
+ * Component of logic of Player entity
+ *
+ * @author Jose Miguel Cordero
+ */
 public class PlayerComponent extends Component {
 
     private PositionComponent position;

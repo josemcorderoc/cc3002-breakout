@@ -5,6 +5,11 @@ import com.almasb.fxgl.entity.components.PositionComponent;
 import javafx.scene.paint.Color;
 import logic.brick.Brick;
 
+/**
+ * Component of logic of Brick entity
+ *
+ * @author Jose Miguel Cordero
+ */
 public class BrickComponent extends Component {
 
     private PositionComponent position;
@@ -12,6 +17,13 @@ public class BrickComponent extends Component {
     private Color color;
     private String hitSound;
 
+    /**
+     * BrickComponent constructor
+     * @param x x pos
+     * @param y y pos
+     * @param brick brick associated to component
+     * @param color brick color
+     */
     public BrickComponent(double x, double y, Brick brick, Color color) {
         position = new PositionComponent();
         position.setX(x);

@@ -1,6 +1,5 @@
 package gui;
 
-import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
@@ -92,7 +91,7 @@ public final class BreakoutFactory implements EntityFactory {
      * @param y y pos
      * @param width brick width
      * @param height brick heigth
-     * @param brick {@Brick} associated with the entity
+     * @param brick Brick associated with the entity
      * @return Entity brick
      */
     public static Entity newBrick(double x, double y, double width, double height, Brick brick) {

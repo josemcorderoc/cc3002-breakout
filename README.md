@@ -1,6 +1,6 @@
 # Breakout
 
-This project is a clone of the game [Breakout](https://en.wikipedia.org/wiki/Breakout_(video_game)), developed as homework 2 of the course CC3002 (Metodologías de Diseño y Programación) 2018 of [Universidad de Chile](http://www.uchile.cl).
+This project is a clone of the game [Breakout](https://en.wikipedia.org/wiki/Breakout_(video_game)), developed as homework 2 and 3 of the course CC3002 (Metodologías de Diseño y Programación) 2018 of [Universidad de Chile](http://www.uchile.cl).
 
 It contains both the logic and the graphic interface of game, which is based on:
 
@@ -16,6 +16,30 @@ For this, we used the following design patterns:
 * Null Pattern (in package [logic.level](../cc3002-breakout/src/main/java/logic/level))
 * Visitor Pattern (in package [visitor](../cc3002-breakout/src/main/java/visitor))
 
+### Features
+
+This version of the game has 2 major features and 2 minor features:
+
+#### Major features
+* **Changing state of bricks**: when a brick is hit, It color changes to a less saturated color.
+* **New brick**: we create the [PlasticBrick](../cc3002-breakout/src/main/java/logic/brick/PlasticBrick.java), which has 15
+ hit points and the special function to destroy all the bricks in a level when the plastic brick is destroyed.
+ The max quantity of Plastic Bricks in one level is 1 (the ProbOfPlastic is the probability of having one plastic brick).
+
+
+#### Minor features
+* **Sound at hit**: when you hit a brick, the game plays a sound (the sound is different depending of the type of brick).
+ Also, when a brick is destroyed, 
+* **Image with balls left**: we replaced the label with the number of balls left (lives) with drawing the balls in the left top
+of the 
+
+### Bricks
+
+We have 4 different types of bricks:
+* **Glass Brick**: light blue color, 1 hit point.
+* **Wooden Brick**: blue color, 3 hit points.
+* **Metal Brick**: dark red color, 10 hit points.
+* **Plastic Brick**: yellow color, 15 hit points.
 
 ## Getting Started
 
@@ -29,7 +53,15 @@ For this, we used the following design patterns:
 
 ## Running the game
 
-For running the game, you have 
+To run the game, execute the main method of class BreakoutApp.
+
+### Keys for playing
+
+* Key N: creates a new level
+* Key SPACE: launch the ball (starts the game)
+* Key ESC: pauses the game (open a Menu for Resume or Quit)
+* Key A: moves the player to the left
+* Key D: moves the player to the right
 
 ## Running the tests
 

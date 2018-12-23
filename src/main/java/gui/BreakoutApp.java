@@ -73,6 +73,10 @@ public class BreakoutApp extends GameApplication implements Observer {
     private final double PlayerSpeed = 15;
     private final double BallSpeed = 10;
 
+    /**
+     * Run the game
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
@@ -172,7 +176,7 @@ public class BreakoutApp extends GameApplication implements Observer {
         gameOn = false;
         getGameWorld().getEntitiesByType(EntityType.BALL, EntityType.PLAYER)
                 .forEach(Entity::removeFromWorld);
-        Entity player = newPlayer(0.5*WIDTH - 100/2, 0.9*HEIGHT, 100, PlayerSpeed);
+        Entity player = newPlayer(0.5*WIDTH - 50, 0.9*HEIGHT, 100, PlayerSpeed);
         Entity ball = newBall(0.5*WIDTH,0.9*HEIGHT - 20, BallSpeed);
         getGameWorld().addEntities(player, ball);
     }
@@ -275,13 +279,6 @@ public class BreakoutApp extends GameApplication implements Observer {
 
             }
         }, KeyCode.N);
-
-        input.addAction(new UserAction("Testing") {
-            @Override
-            protected void onActionBegin() {
-                System.out.println(game.getCurrentLevel().getNumberOfBricks());
-            }
-        }, KeyCode.W);
     }
 
 
